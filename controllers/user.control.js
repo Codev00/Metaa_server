@@ -56,14 +56,14 @@ const userControl = {
       const id = req.params.id;
       if (req.body.userId !== id) {
          try {
-            // Tim nguoi dung
+            // Your user
             const user = await userModel.findById(id);
-            // Tim nguoi duoc follow
-            const secondUser = await userModel.findById(req.body.userId);
+            // My user
+            const myUser = await userModel.findById(req.body.userId);
             // Kiem tra xem da follow nguoi do hay chua
             if (!user.followers.includes(req.body.userId)) {
                await user.updateOne({ $push: { followers: req.body.userId } });
-               await secondUser.updateOne({ $push: { followings: id } });
+               await myUser.updateOne({ $push: { followings: id } });
                res.status(200).json("Theo doi thanh cong!");
             } else {
                res.status(403).json("Bạn đã theo dõi người dùng này!");
@@ -81,10 +81,10 @@ const userControl = {
       if (req.body.userId !== id) {
          try {
             const user = await userModel.findById(id);
-            const secondUser = await userModel.findById(req.body.userId);
+            const myUser = await userModel.findById(req.body.userId);
             if (user.followers.includes(req.body.userId)) {
                await user.updateOne({ $pull: { followers: req.body.userId } });
-               await secondUser.updateOne({ $pull: { followings: id } });
+               await myUser.updateOne({ $pull: { followings: id } });
                res.status(200).json("Bo theo doi thanh cong!");
             } else {
                res.status(403).json("Ban chua theo doi nguoi dung nay");

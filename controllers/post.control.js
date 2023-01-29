@@ -1,4 +1,5 @@
 import postModel from "../model/post.model.js";
+import userModel from "../model/user.model.js";
 
 const postControl = {
    // Create Post
@@ -63,6 +64,21 @@ const postControl = {
          const id = req.params.id;
          const post = await postModel.findById(id);
          res.status(200).json(post);
+      } catch (error) {
+         res.status(500).json({ err: error.message });
+      }
+   },
+   // News Feed
+   newsFeed: async (req, res) => {
+      try {
+         const curUser = await userModel.findById(req.body.userId);
+         const userPosts = await postModel.find({ userId: curUser._id });
+         const friendPosts = await Promise.all(
+            curUser.followings.map((friendId) => {
+               return postModel.find({ userId: friendId });
+            })
+         );
+         res.status(200).json(userPosts.concat(...friendPosts));
       } catch (error) {
          res.status(500).json({ err: error.message });
       }

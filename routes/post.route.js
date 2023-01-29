@@ -13,5 +13,7 @@ router.delete("/:id", postControl.deletePost);
 router.put("/:id/like", postControl.likePost);
 // Get post
 router.get("/:id", postControl.getPost);
+// News Feed
+router.get("/news/all", postControl.newsFeed);
 
 export default router;
