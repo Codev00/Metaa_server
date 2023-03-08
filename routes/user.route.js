@@ -4,7 +4,7 @@ import userControl from "../controllers/user.control.js";
 const router = Router();
 
 // Get user
-router.get("/:id", userControl.getUser);
+router.get("/", userControl.getUser);
 // Update user
 router.put("/:id", userControl.updateUser);
 // Delete User

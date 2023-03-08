@@ -5,9 +5,12 @@ const userControl = {
    // Lay thong tin user
    getUser: async (req, res) => {
       try {
-         const id = req.params.id;
-         const user = await userModel.findById(id);
-         const { password, __v, createdAt, updatedAt, ...rest } = user._doc;
+         const userId = req.query.userId;
+         const username = req.query.username;
+         const user = userId
+            ? await userModel.findById(userId)
+            : await userModel.findOne({ username: username });
+         const { password, __v, ...rest } = user._doc;
          res.status(200).json(rest);
       } catch (error) {
          res.status(500).json({ err: error.message });

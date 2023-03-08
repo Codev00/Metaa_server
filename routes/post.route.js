@@ -14,6 +14,8 @@ router.put("/:id/like", postControl.likePost);
 // Get post
 router.get("/:id", postControl.getPost);
 // News Feed
-router.get("/news/all", postControl.newsFeed);
+router.get("/news/:userId", postControl.newsFeed);
+// User Feed
+router.get("/:username", postControl.userFeed);
 
 export default router;

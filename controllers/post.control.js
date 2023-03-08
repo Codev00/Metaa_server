@@ -71,7 +71,7 @@ const postControl = {
    // News Feed
    newsFeed: async (req, res) => {
       try {
-         const curUser = await userModel.findById(req.body.userId);
+         const curUser = await userModel.findById(req.params.userId);
          const userPosts = await postModel.find({ userId: curUser._id });
          const friendPosts = await Promise.all(
             curUser.followings.map((friendId) => {
@@ -79,6 +79,18 @@ const postControl = {
             })
          );
          res.status(200).json(userPosts.concat(...friendPosts));
+      } catch (error) {
+         res.status(500).json({ err: error.message });
+      }
+   },
+   // User Feed
+   userFeed: async (req, res) => {
+      try {
+         const user = await userModel.findOne({
+            username: req.params.username,
+         });
+         const posts = await postModel.find({ userId: user._id });
+         res.status(200).json(posts);
       } catch (error) {
          res.status(500).json({ err: error.message });
       }
