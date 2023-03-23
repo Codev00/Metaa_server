@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema(
          required: true,
          unique: true,
       },
+      name: {
+         type: String,
+         default: "",
+      },
       password: {
          type: String,
          required: true,
@@ -19,10 +23,6 @@ const userSchema = new mongoose.Schema(
          max: 50,
       },
       profileImg: {
-         type: String,
-         default: "",
-      },
-      coverImg: {
          type: String,
          default: "",
       },

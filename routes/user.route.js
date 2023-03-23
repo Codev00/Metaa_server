@@ -5,6 +5,10 @@ const router = Router();
 
 // Get user
 router.get("/", userControl.getUser);
+// Get All user
+router.get("/:id", userControl.getAllUser);
+// Get Followers
+router.get("/followings/:id", userControl.getFollowings);
 // Update user
 router.put("/:id", userControl.updateUser);
 // Delete User

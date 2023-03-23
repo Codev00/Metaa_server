@@ -10,10 +10,20 @@ const userControl = {
          const user = userId
             ? await userModel.findById(userId)
             : await userModel.findOne({ username: username });
-         const { password, __v, ...rest } = user._doc;
+         const { password, ...rest } = user._doc;
          res.status(200).json(rest);
       } catch (error) {
          res.status(500).json({ err: error.message });
+      }
+   },
+   // Lay tat ca user - currentUser
+   getAllUser: async (req, res) => {
+      try {
+         const userId = req.params.id;
+         const userList = await userModel.find({ _id: { $ne: userId } });
+         res.status(200).json(userList);
+      } catch (err) {
+         res.status(500).json({ error: err });
       }
    },
    // Cap nhat user
@@ -97,6 +107,24 @@ const userControl = {
          }
       } else {
          res.status(403).json("Ban khong the bo theo doi chinh minh??");
+      }
+   },
+   getFollowings: async (req, res) => {
+      try {
+         const user = await userModel.findById(req.params.id);
+         const followings = await Promise.all(
+            user.followings.map((followId) => {
+               return userModel.findById(followId);
+            })
+         );
+         let followList = [];
+         followings.map((follow) => {
+            const { _id, username, profileImg } = follow;
+            followList.push({ _id, username, profileImg });
+         });
+         res.status(200).json(followList);
+      } catch (err) {
+         res.status(500).json({ error: err });
       }
    },
 };
