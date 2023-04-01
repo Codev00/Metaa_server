@@ -87,7 +87,7 @@ const postControl = {
    userFeed: async (req, res) => {
       try {
          const user = await userModel.findOne({
-            username: req.params.username,
+            username: req.query.username,
          });
          const posts = await postModel.find({ userId: user._id });
          res.status(200).json(posts);
