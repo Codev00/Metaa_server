@@ -1,10 +1,21 @@
 import postControl from "../controllers/post.control.js";
 import { Router } from "express";
-
+import uploadCloud from "../middlewares/cloudinary.js";
 const router = Router();
 
 // Create post
-router.post("/", postControl.createPost);
+router.post(
+   "/create",
+   uploadCloud.single("image", (req, res, next) => {
+      if (!req.file) {
+         console.log(req.file);
+         next(new Error("No file uploaded"));
+         return;
+      }
+      next();
+   }),
+   postControl.createPost
+);
 // Update post
 router.put("/:id", postControl.updatePost);
 // Delete post

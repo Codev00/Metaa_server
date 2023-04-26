@@ -1,6 +1,5 @@
 import userModel from "../model/user.model.js";
 import bcrypt from "bcrypt";
-
 const authControl = {
    // Register
    register: async (req, res) => {
