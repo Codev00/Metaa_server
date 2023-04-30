@@ -1,3 +1,4 @@
+import { JWTsign } from "../middlewares/JWTaccess.js";
 import userModel from "../model/user.model.js";
 import bcrypt from "bcrypt";
 const authControl = {
@@ -35,8 +36,17 @@ const authControl = {
          if (!validPass) {
             return res.status(400).json("Sai mat khau!");
          }
+         const { password, ...userData } = user._doc;
+         // Create token
+         const token = JWTsign(userData, process.env.JWT_SECRET, "30d");
+         res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+         });
 
-         res.status(200).json(user);
+         res.status(200).json({ userData, token });
       } catch (error) {
          res.status(500).json({ err: error.message });
       }
