@@ -25,7 +25,7 @@ const authControl = {
          // Tìm user
          const user = await userModel.findOne({ email: req.body.email });
          if (!user) {
-            res.status(404).json("Nguoi dung khong ton tai!");
+            return res.status(404).json("Nguoi dung khong ton tai!");
          }
          // So sánh pass
          const validPass = await bcrypt.compare(
@@ -33,7 +33,7 @@ const authControl = {
             user.password
          );
          if (!validPass) {
-            res.status(400).json("Sai mat khau!");
+            return res.status(400).json("Sai mat khau!");
          }
 
          res.status(200).json(user);
