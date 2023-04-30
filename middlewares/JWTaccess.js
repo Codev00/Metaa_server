@@ -15,7 +15,7 @@ const JWTverity = (req, res, next) => {
    }
    try {
       const data = jwt.verify(token, key);
-      req.userId = data._id;
+      req.user = data;
       next();
    } catch (error) {
       console.log(error);

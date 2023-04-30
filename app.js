@@ -11,6 +11,7 @@ import postRoute from "./routes/post.route.js";
 import cmtRoute from "./routes/comment.route.js";
 import path from "path";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
 import { log } from "console";
 
@@ -23,6 +24,8 @@ const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
    cors({

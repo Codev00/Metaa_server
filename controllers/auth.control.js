@@ -40,13 +40,17 @@ const authControl = {
          // Create token
          const token = JWTsign(userData, process.env.JWT_SECRET, "30d");
          res.cookie("token", token, {
-            httpOnly: true,
-            sameSite: "none",
-            secure: true,
             maxAge: 30 * 24 * 60 * 60 * 1000,
          });
 
-         res.status(200).json({ userData, token });
+         res.status(200).json(userData);
+      } catch (error) {
+         res.status(500).json({ err: error.message });
+      }
+   },
+   autoLogin: async (req, res) => {
+      try {
+         res.status(200).json(req.user);
       } catch (error) {
          res.status(500).json({ err: error.message });
       }
