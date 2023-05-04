@@ -39,8 +39,10 @@ const userControl = {
          }
          try {
             const id = req.params.id;
+            const img = req.file;
+            const data = req.body;
             const user = await userModel.findByIdAndUpdate(id, {
-               $set: req.body,
+               $set: { username: data.username, profileImg: img.path },
             });
             res.status(200).json("Cap nhat thong tin thanh cong ~");
          } catch (error) {

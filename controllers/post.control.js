@@ -5,7 +5,8 @@ const postControl = {
    // Create Post
    createPost: async (req, res) => {
       try {
-         const newPost = new postModel(req.body);
+         const file = req.file;
+         const newPost = new postModel({ ...req.body, img: file.path });
          const post = await newPost.save();
          res.status(200).json(post);
       } catch (error) {

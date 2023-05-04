@@ -1,6 +1,6 @@
+import { JWTsign } from "../middlewares/JWTaccess.js";
 import userModel from "../model/user.model.js";
 import bcrypt from "bcrypt";
-
 const authControl = {
    // Register
    register: async (req, res) => {
@@ -26,7 +26,7 @@ const authControl = {
          // Tìm user
          const user = await userModel.findOne({ email: req.body.email });
          if (!user) {
-            res.status(404).json("Nguoi dung khong ton tai!");
+            return res.status(404).json("Nguoi dung khong ton tai!");
          }
          // So sánh pass
          const validPass = await bcrypt.compare(
@@ -34,10 +34,23 @@ const authControl = {
             user.password
          );
          if (!validPass) {
-            res.status(400).json("Sai mat khau!");
+            return res.status(400).json("Sai mat khau!");
          }
+         const { password, ...userData } = user._doc;
+         // Create token
+         const token = JWTsign(userData, process.env.JWT_SECRET, "30d");
+         res.cookie("token", token, {
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+         });
 
-         res.status(200).json(user);
+         res.status(200).json(userData);
+      } catch (error) {
+         res.status(500).json({ err: error.message });
+      }
+   },
+   autoLogin: async (req, res) => {
+      try {
+         res.status(200).json(req.user);
       } catch (error) {
          res.status(500).json({ err: error.message });
       }
