@@ -13,7 +13,6 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import { fileURLToPath } from "url";
-import { log } from "console";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,12 +26,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(
-   cors({
-      credentials: true,
-      origin: ["http://localhost:8080"],
-   })
-);
+app.use(cors());
 app.use("/images", express.static(path.join(__dirname + "/public/images")));
 // Connec to Data-base
 mongoose.set("strictQuery", false);
