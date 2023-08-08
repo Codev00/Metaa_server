@@ -6,6 +6,7 @@
    "license": "ISC",
    "description": "",
    "type": "module",
+   "proxy": "https://metaa-service.onrender.com",
    "devDependencies": {},
    "dependencies": {
       "bcrypt": "^5.1.0",
